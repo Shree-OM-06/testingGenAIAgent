@@ -7,7 +7,8 @@ import chromadb
 from chromadb.utils import embedding_functions
 
 class SurveyRAG:
-    def __init__(self, collection_name="survey_collection"):
+    def __init__(self, model_name="llama3.2",collection_name="survey_collection"):
+        self.model_name = model_name
         self.client = chromadb.Client()
         self.collection_name = collection_name
         self._init_collection()
@@ -55,7 +56,7 @@ class SurveyRAG:
         all_docs = [doc for doc in self.collection.get()["documents"]]
         combined_text = "\n".join(all_docs)
         prompt = f"Summarize the following survey responses:\n\n{combined_text}"
-        response = ollama.chat(model="llama3.2", messages=[{"role": "user", "content": prompt}])
+        response = ollama.chat(model=self.model_name, messages=[{"role": "user", "content": prompt}])
         return response["message"]["content"]
 
     def query(self, question):
@@ -66,5 +67,5 @@ class SurveyRAG:
         # Simple retrieval: top 5
         context = "\n".join(docs[:5])
         prompt = f"Context:\n{context}\n\nQuestion: {question}\nAnswer:"
-        response = ollama.chat(model="llama3.2", messages=[{"role": "user", "content": prompt}])
+        response = ollama.chat(model=self.model_name, messages=[{"role": "user", "content": prompt}])
         return response["message"]["content"]
