@@ -42,11 +42,11 @@ def gpt_40(user_prompt: str):
         model=deployment,
         messages=messages,
         max_tokens=160,
-        temperature=0.7,
-        top_p=0.95,
-        frequency_penalty=0,
-        presence_penalty=0,
-        stream=False
+        temperature=0.7
+        # top_p=0.95,
+        # frequency_penalty=0,
+        # presence_penalty=0,
+        # stream=False
     )
 
     result = json.loads(completion.to_json())
